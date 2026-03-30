@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>joanne</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont;
+  background: #0f1115;
+  color: white;
+}
+
+/* 上：joanne */
+.avatar {
+  height: 45vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #1a1d23, #0f1115);
+}
+
+.avatar img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  transition: 0.4s ease;
+  border-radius: 12px;
+}
+
+/* 下：チャット */
+.chat {
+  height: 55vh;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ボタンUI */
+.controls {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+button:hover {
+  background: rgba(255,255,255,0.2);
+}
+</style>
+</head>
+
+<body>
+
+<div class="avatar">
+  <img id="joanne" src="normal.jpg">
+</div>
+
+<div class="chat">
+  <iframe src="https://udify.app/chat/vjr3jDANi62frz2S"></iframe>
+</div>
+
+<div class="controls">
+  <button onclick="setMode('normal')">通常</button>
+  <button onclick="setMode('thinking')">思考</button>
+  <button onclick="setMode('soft')">微笑</button>
+</div>
+
+<script>
+function setMode(mode) {
+  const img = document.getElementById("joanne");
+
+  if (mode === "thinking") {
+    img.src = "thinking.jpg";
+  } else if (mode === "soft") {
+    img.src = "soft.jpg";
+  } else {
+    img.src = "normal.jpg";
+  }
+}
+</script>
+
+</body>
+</html>
