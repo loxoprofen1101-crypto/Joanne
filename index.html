@@ -262,7 +262,8 @@ ${text}`,
   });
 
   const data = await res.json();
-  let reply = data.answer;
+  console.log(data);
+  let reply = data.answer || data.outputs?.answer || "（応答なし）";
 
   addMessage(reply);
 
