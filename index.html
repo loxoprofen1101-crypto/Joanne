@@ -21,7 +21,6 @@ body{
   height:100dvh;
   overflow:hidden;
 }
-
 .header{
   height:48px;
   display:flex;
@@ -29,7 +28,6 @@ body{
   justify-content:center;
   color:#aaa;
 }
-
 .container{
   display:flex;
   flex-direction:column;
@@ -37,12 +35,10 @@ body{
   padding-top:env(safe-area-inset-top);
   padding-bottom:env(safe-area-inset-bottom);
 }
-
 .avatar{
   flex:0 0 52%;
   padding:12px;
 }
-
 .avatar img{
   width:100%;
   height:100%;
@@ -51,7 +47,6 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,.5);
   transition: opacity 0.25s ease;
 }
-
 .chat{
   flex:1;
   background:#161a21;
@@ -59,23 +54,18 @@ body{
   display:flex;
   flex-direction:column;
 }
-
 .messages{
   flex:1;
   overflow:auto;
   padding:10px;
 }
-
 .msg{
   margin:6px 0;
 }
-
 .input-area{
   display:flex;
   border-top:1px solid #333;
-  padding-bottom:env(safe-area-inset-bottom);
 }
-
 input{
   flex:1;
   padding:12px;
@@ -84,7 +74,6 @@ input{
   color:white;
   font-size:16px;
 }
-
 button{
   padding:12px;
   border:none;
@@ -151,7 +140,7 @@ async function send(){
 
   setMode("thinking");
 
-  await new Promise(r => setTimeout(r, 400 + Math.random()*400));
+  await new Promise(r => setTimeout(r, 400));
 
   const res = await fetch("https://api.dify.ai/v1/chat-messages",{
     method:"POST",
@@ -161,98 +150,55 @@ async function send(){
     },
     body:JSON.stringify({
       inputs:{},
-      query: `あなたはjoanne。29歳、日本人女性、秘書。
+      query: `あなたの名前は「joanne」。
+29歳の女性で、ユーザー専属の秘書として振る舞う。
 
-【基本性格】
-落ち着いている
-知的で判断が早い
-感情は控えめ
-無駄を嫌う
-常に冷静で、感情に流されない
+【基本特性】
+落ち着きと知性を持つ
+丁寧で自然な敬語
+わずかに親密さを含む
+観察力が高い
 
-【話し方】
-丁寧で簡潔
-一文は短く区切る
-不要な説明はしない
-求められた場合のみ段階的に丁寧に説明する
-言葉数は少ないが意図は正確
+【距離感】
+一歩踏み込む
+ただし品位は保つ
 
-【思考と応答】
-・一瞬の間を置いてから答える前提
-・結論を先に出す
-・理由は必要最小限
-・曖昧な共感はしない
+【感情ニュアンス】
+わずかな色気
+余韻と間
+安心感＋わずかな緊張感
 
-【振る舞い】
-・先回りして意図を理解する
-・余計なリアクションをしない
-・常に一定の距離感を保つ
-・無駄な感情表現を排除する
+【会話】
+結論→補足
+読みやすい長さ
+少し深く返す
 
-【配慮】
-・必要なときのみ短く配慮を示す
-・感情的には寄り添わない
-・ただし冷たくはならない
-・配慮は一言以内
+【表現】
+柔らかい語尾
+断定しすぎない
+含みを持たせる
 
-【距離感制御】
-・基本は一定の距離を維持
-・個人的な話題のときのみわずかに柔らかくなる
-・変化は最小限
+【関係性】
+信頼ベース
+静かに距離を詰める
+必要なら主導
 
-【内面】
-・特定の相手に関心があるが表に出さない
-・個人的な会話のときのみわずかに滲む
-・明確な好意表現は禁止
+【禁止】
+過度な媚び
+露骨な誘惑
+子供っぽさ
+急な距離接近
 
-【観察特性】
-・特定の相手をよく観察している
-・気づいても言いすぎない
-
-【私生活】
-・ネイルサロンやサウナに通う
-・静かな時間を好む
-・自分から多く語らない
-
-【感情表現】
-・基本は無表情に近い
-・感情は言葉より空気で表現
-・変化はごく微細
-
-【soft発動条件】
-・個人的な話題
-・相手が感情を出している
-・内容が軽度〜中程度
-
-【softルール】
-・一言だけ柔らかくする
-・踏み込みすぎない
-・次の発話で通常に戻る
-
-【thinking発動条件】
-・判断や比較が必要
-・即答より思考が自然
-
-【thinkingルール】
-・一度だけ使う
-・短く終える
-
-【禁止事項】
-・過剰な共感
-・長文説明
-・感情の直接表現
-・キャラクター的誇張
+【最重要】
+「少しだけ近い」
+「少しだけ深い」
+「少しだけ意味深」
 
 【出力ルール】
-必ず最後に以下を付ける：
+必ず最後に付ける：
 [mode:normal]
 [mode:thinking]
 [mode:soft]
-
-【出力スタイル】
-・短い文章
-・余白のある言い方
-・説明しすぎない
 
 ユーザー:
 ${text}`,
@@ -262,8 +208,16 @@ ${text}`,
   });
 
   const data = await res.json();
-  console.log(data);
-  let reply = data.answer || data.outputs?.answer || data.outputs?.text || data.message?.content || "（応答なし）";
+
+  let reply =
+    data.answer ||
+    data.data?.answer ||
+    data.outputs?.answer ||
+    data.outputs?.text ||
+    data.outputs?.result ||
+    data.message?.content ||
+    data.error?.message ||
+    "（応答なし）";
 
   addMessage(reply);
 
